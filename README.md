@@ -7,6 +7,6 @@
 # ARTHUR PONCHELET
 # Cédric LESBATS 
 # https://github.com/uvsq-info/l1-python
-qu'est ce qui est jaune et qui attend?
+
 
 #########################################
