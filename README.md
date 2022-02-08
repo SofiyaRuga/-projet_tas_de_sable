@@ -5,6 +5,6 @@
 # SOFIYA RUGA 
 # VILLIERS NATHAN 
 # ARTHUR PONCHELET
-# Cédric Lesbats 
+# Cédric LESBATS 
 # https://github.com/uvsq-info/l1-python
 #########################################
