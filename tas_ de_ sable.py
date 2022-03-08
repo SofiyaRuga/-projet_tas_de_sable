@@ -14,6 +14,7 @@ from turtle import width
 
 
 
+
 #DEFINITION DES CONSTANTES
 m = int(input("coté de la grille"))
 
@@ -67,15 +68,15 @@ def aléatoire ():
     print(L)
 
 def couleurs ():
-    
+    pass
 
 #PROGRAMME
 
 #---création de l'interface graphique
 root = tk.Tk()
-
 root.title("Tas De Sable")
 root.geometry("1920x1080")
+
 canvas = tk.Canvas(root,width=largeur,height=hauteur,bg="#000000")
 canvas.grid(row=3,column=3,rowspan=1,columnspan=1)
 
