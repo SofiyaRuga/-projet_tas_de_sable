@@ -61,7 +61,7 @@ def creationconfiguration ():
         for k in range (nbrecase):
             try:
                 L[i].append(0)
-            except IndexError :
+            except IndexError :         #Ici, Nel m'a aidé :)
                 continue
     global configuration 
     configuration = L
@@ -84,28 +84,13 @@ def creationconfigaleatoire ():
             compteur+=1
         else:
             pass
+    configuration=L
     configaleatoire=configuration
 
         
 
 
         
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 #Affiche en couleur orange les proies aux coordonnées de la première config crée aléatoirement
