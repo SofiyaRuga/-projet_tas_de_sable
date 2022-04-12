@@ -129,7 +129,7 @@ def deplacement():
                 
                    
                         
-                elif hasard==3:     #droite
+                elif hasard==3:     #droite  
                     if j<nbrecase-1:
                         if L[i][j+1]==0:
                             L[i][j],L[i][j+1]=0,1
