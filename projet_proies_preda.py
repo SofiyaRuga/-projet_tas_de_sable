@@ -20,7 +20,7 @@ root.geometry("1920x1080")
 
 
 
-
+#
 
 
 #demande le nombre de case et le nombre de proies souhaitées
