@@ -4,7 +4,7 @@
 # Nathan  Villiers 
 # Arthur Ponchelet 
 # Cédric lesbast 
-#https://github.com/uvsq-info/l1-python
+#https://github.com/SofiyaRuga/-projet_tas_de_sable
 #######################################################
 
 
@@ -32,7 +32,7 @@ taillecase=float(cote/nbrecase)
 x0=0
 y0=0
 canvas = tk.Canvas(root,width=cote,height=cote,bg="#000000")
-canvas.grid(row=3,column=2,rowspan=4,columnspan=4)
+canvas.grid(row=0,column=2,rowspan=4,columnspan=4)
 
 
 
@@ -197,8 +197,7 @@ def deplacement():
                             pass
                     else:
                         pass
-            else:
-                pass
+            
                 
 
     affichageproie()
