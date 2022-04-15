@@ -12,6 +12,7 @@
 
 import tkinter as tk
 import random as r
+from tracemalloc import stop
 root = tk.Tk()
 root.title("Tas De Sable")
 root.geometry("1920x1080")
@@ -25,6 +26,8 @@ root.geometry("1920x1080")
 #demande le nombre de case et le nombre de proies souhaitées
 nbrecase=int(input("nombre de cases de coté (conseillé 30)"))
 nombreproie=int(input("nombre de proie"))
+naissanceproie=int(input("entrez le nombre de naissance de proies par itération"))
+vieproie=int(input("entrez la durée de vie (en itérations) des proies"))
 
 cote=750  #int(input("taille du canvas(conseillé <750)"))
 taillecase=float(cote/nbrecase)
@@ -39,6 +42,7 @@ canvas.grid(row=0,column=2,rowspan=4,columnspan=4)
 #message d'erreur si l'utilisateur choisi trop de proies pour la capacité du terrain
 if nombreproie>(nbrecase*nbrecase):
     print("Il ne peut pas y avoir autant de proies sur le terrain ! Relancez le script svp")
+    exit()
     
 
 
@@ -94,13 +98,34 @@ def creationconfigaleatoire ():
 
 
         
+#fonction qui, à chaque itération, rajoute le nombre de proies qui naissent dans la liste représentative
+def naissance():               
+    global nombreproie
+    compte=0
+    while compte!=naissanceproie:
+        positionsy=int(r.randint(0,nbrecase-1))
+        positionsx=int(r.randint(0,nbrecase-1))
+        if L[positionsy][positionsx]==0:
+            L[positionsy][positionsx]=1
+            compte+=1
+    nombreproie+=naissanceproie
+
+        
+            
 
 
 
 
 
-
+#fonction qui détermine une itération, en déplacant chaque proie (déplacement des 1 dans la liste) et qui au passage 
+#actualise leur nombre (en ajoutant les naissance -avec la fonction naissance-) 
 def deplacement():
+    global vieproie
+    if nombreproie==nbrecase*nbrecase:                        #si le nombre de proie après l'ajout des naissance rempli complètement la grille, le script s'arrête
+        print("les proies ont envahi le terrain !")
+        exit()
+
+
     L_c = []
     for x in range(len(L)): 
         truc = [] 
@@ -111,72 +136,53 @@ def deplacement():
 
     for i in range(len(L_c)):
         for j in range (len(L_c[i])):
-            if L_c[i][j]==1:
+            if L_c[i][j]>=1 and L_c[i][j]<vieproie :
                 hasard=r.randint(1,8)
-                print(hasard)
+                L[i][j]+=1
                 if hasard==1 :     #monte en haut
                     if i>0:
                         if L[i-1][j]==0:
-                            L[i][j],L[i-1][j]=0,1
+                            L[i-1][j],L[i][j]=L[i][j],L[i-1][j]
                             
-                        
+                                 
                 elif hasard==2:    #haut droite
                     if i>0 and j<nbrecase-1:
                         if L[i-1][j+1]==0:
-                            L[i][j],L[i-1][j+1]=0,1
-                            
-                    
-                
-                   
+                            L[i][j],L[i-1][j+1]=L[i-1][j+1],L[i][j]
                         
                 elif hasard==3:     #droite  
                     if j<nbrecase-1:
                         if L[i][j+1]==0:
-                            L[i][j],L[i][j+1]=0,1
-                            
-
-                    
-
-
+                            L[i][j],L[i][j+1]=L[i][j+1],L[i][j]
+                        
                 elif hasard==4:             #bas droite
                     if i<nbrecase-1 and j<nbrecase-1:
                         if L[i+1][j+1]==0:
-                            L[i][j],L[i+1][j+1]=0,1
+                            L[i][j],L[i+1][j+1]=L[i+1][j+1],L[i][j]
                             
-
-
-
                 elif hasard==5 :               #bas
                     if i<nbrecase-1:
                         if L[i+1][j]==0:
-                            L[i][j],L[i+1][j]=0,1
+                            L[i][j],L[i+1][j]=L[i+1][j],L[i][j]
                             
-                    
-
-
                 elif hasard==6 :          #bas gauche
                     if i<nbrecase-1 and j>0:
                         if L[i+1][j-1]==0:
-                            L[i][j],L[i+1][j-1]=0,1
+                            L[i][j],L[i+1][j-1]=L[i+1][j-1],L[i][j]
                             
-
-
                 elif hasard==7:            #gauche
                     if j>0:
                         if L[i][j-1]==0:
-                            L[i][j],L[i][j-1]=0,1
+                            L[i][j],L[i][j-1]=L[i][j-1],L[i][j]
                             
-
-
                 elif hasard==8:              #haut gauche
                     if i>0 and j>0:
                         if L[i-1][j-1]==0:
-                            L[i][j],L[i-1][j-1]=0,1
-                            
-            
-                
-
-    affichageproie()
+                            L[i][j],L[i-1][j-1]=L[i-1][j-1],L[i][j]      
+            elif L_c[i][j]==vieproie:
+                L[i][j]=0
+    naissance()                         #ajoute les proies qui sont nées dans la liste représentative
+    affichageproie()                    #actualise l'affichage des proies pour cette itération
     
     
 
@@ -197,15 +203,20 @@ def deplacement():
         
 
 
-#Affiche en couleur orange les proies aux coordonnées de la première config crée aléatoirement
+#actualise l'affichage des proies sur le terrain en scannant les 1 et en traçant des carrés
 def affichageproie():
     for i in range (len(L)):
         for j in range (len(L[i])):
-            if L[i][j]==1:
-                canvas.create_rectangle(x0 +taillecase*j,y0+taillecase*i,x0 +taillecase*(j+1),y0+taillecase*(i+1),fill="orange")
+            if L[i][j]>=1 and L[i][j]<4:
+                canvas.create_rectangle(x0 +taillecase*j,y0+taillecase*i,x0 +taillecase*(j+1),y0+taillecase*(i+1),fill="white")
             elif L[i][j]==0:
                 canvas.create_rectangle(x0 +taillecase*j,y0+taillecase*i,x0+taillecase*(j+1),y0+taillecase*(i+1),fill="black")
-    tracagegrille()
+            elif L[i][j]>=4 and L[i][j]<7:
+                canvas.create_rectangle(x0 +taillecase*j,y0+taillecase*i,x0 +taillecase*(j+1),y0+taillecase*(i+1),fill="yellow")
+            elif L[i][j]>=7:
+                canvas.create_rectangle(x0 +taillecase*j,y0+taillecase*i,x0 +taillecase*(j+1),y0+taillecase*(i+1),fill="orange")
+            
+    tracagegrille()           #retrace la grille (du coup à chaque itération) car il y avait un pb d'affichage
 
 
 
