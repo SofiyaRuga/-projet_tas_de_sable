@@ -9,10 +9,9 @@
 
 
 
-from re import L
+
 import tkinter as tk
 import random as r
-from tracemalloc import stop
 root = tk.Tk()
 root.title("Tas De Sable")
 root.geometry("1920x1080")
@@ -74,6 +73,7 @@ def creationconfiguration ():
     print(L)
 
 
+
 #place aléatoirement le nombre de proies choisies sur la config vierge existante, à des places uniques 
 def creationconfigaleatoire ():
     global configaleatoire
@@ -88,10 +88,10 @@ def creationconfigaleatoire ():
             possible.append(positions)
             L[positiony][positionx]=1
             compteur+=1
-        else:
-            pass
+        
     configuration=L
     configaleatoire=configuration
+
 
         
 
@@ -101,30 +101,30 @@ def creationconfigaleatoire ():
 
 
 def deplacement():
-    for i in range(len(L)):
-        for j in range (len(L[i])):
-            if L[i][j]==1:
+    L_c = []
+    for x in range(len(L)): 
+        truc = [] 
+        for elem in L[x]:         #ici, la fonction "copy()" ne fonctionnait pas, alors j'ai récup un script sur internet
+            truc.append(elem)     #pour copier manuellement la liste L en une copie indépendante qui est scannée et qui n'est donc
+        L_c.append(truc)          #pas modifiée pour pas troubler le scan
+
+
+    for i in range(len(L_c)):
+        for j in range (len(L_c[i])):
+            if L_c[i][j]==1:
                 hasard=r.randint(1,8)
                 print(hasard)
                 if hasard==1 :     #monte en haut
                     if i>0:
                         if L[i-1][j]==0:
                             L[i][j],L[i-1][j]=0,1
-                            pass
-                        else:
-                            pass
-                    else:
-                        pass
+                            
                         
                 elif hasard==2:    #haut droite
                     if i>0 and j<nbrecase-1:
                         if L[i-1][j+1]==0:
                             L[i][j],L[i-1][j+1]=0,1
-                            pass
-                        else:
-                            pass
-                    else:
-                        pass
+                            
                     
                 
                    
@@ -133,11 +133,7 @@ def deplacement():
                     if j<nbrecase-1:
                         if L[i][j+1]==0:
                             L[i][j],L[i][j+1]=0,1
-                            pass
-                        else:
-                            pass
-                    else:
-                        pass
+                            
 
                     
 
@@ -146,11 +142,7 @@ def deplacement():
                     if i<nbrecase-1 and j<nbrecase-1:
                         if L[i+1][j+1]==0:
                             L[i][j],L[i+1][j+1]=0,1
-                            pass
-                        else:
-                            pass
-                    else:
-                        pass
+                            
 
 
 
@@ -158,11 +150,7 @@ def deplacement():
                     if i<nbrecase-1:
                         if L[i+1][j]==0:
                             L[i][j],L[i+1][j]=0,1
-                            pass
-                        else:
-                            pass
-                    else:
-                        pass
+                            
                     
 
 
@@ -170,37 +158,27 @@ def deplacement():
                     if i<nbrecase-1 and j>0:
                         if L[i+1][j-1]==0:
                             L[i][j],L[i+1][j-1]=0,1
-                            pass
-                        else:
-                            pass
-                    else:
-                        pass
+                            
 
 
                 elif hasard==7:            #gauche
                     if j>0:
                         if L[i][j-1]==0:
                             L[i][j],L[i][j-1]=0,1
-                            pass
-                        else:
-                            pass
-                    else:
-                        pass
+                            
 
 
                 elif hasard==8:              #haut gauche
                     if i>0 and j>0:
                         if L[i-1][j-1]==0:
                             L[i][j],L[i-1][j-1]=0,1
-                            pass
-                        else:
-                            pass
-                    else:
-                        pass
+                            
             
                 
 
     affichageproie()
+    
+    
 
  
   
