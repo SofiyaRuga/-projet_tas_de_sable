@@ -333,7 +333,6 @@ def affichageproie():
 
 
 
-
 #boutons
 bouton_config_vide = tk.Button(root, text="créer une configuration vide",command=creationconfiguration)
 bouton_config_vide.grid(row=0,column=0)
